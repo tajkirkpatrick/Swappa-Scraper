@@ -8,7 +8,14 @@
 import scrapy
 
 
-class PricespiderItem(scrapy.Item):
+class PhoneItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    pass
+    name = scrapy.Field()
+    description = scrapy.Field()
+    condition_label = scrapy.Field()
+    color = scrapy.Field()
+    storage = scrapy.Field()
+    ram = scrapy.Field()
+    link = scrapy.Field()
+    price = scrapy.Field()
