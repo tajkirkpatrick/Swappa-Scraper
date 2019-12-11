@@ -8,7 +8,12 @@
 import scrapy
 
 
-class PricespiderItem(scrapy.Item):
+class SwappaItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    pass
+    item = scrapy.Field()
+    description = scrapy.Field()
+    condition_label = scrapy.Field()
+    color = scrapy.Field()
+    link = scrapy.Field()
+    price = scrapy.Field()
