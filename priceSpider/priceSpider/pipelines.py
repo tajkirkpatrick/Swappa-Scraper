@@ -38,7 +38,13 @@ class SwappaPipeline(object):
                 break
 
         if name == "Xbox One X":
-            if price <= 300:
+            if price < 300:
+                for item_tuple in products_arr:
+                    if item_tuple[0] == name:
+                        item_tuple[1].append(item)
+
+        if name == "OnePlus 7 Pro":
+            if price <= 456:
                 for item_tuple in products_arr:
                     if item_tuple[0] == name:
                         item_tuple[1].append(item)
