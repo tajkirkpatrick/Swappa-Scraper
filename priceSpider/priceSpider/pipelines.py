@@ -17,7 +17,12 @@ class SwappaPipeline(object):
         return
 
     def close_spider(self, spider):
-        print(products_arr)
+        pprint(products_arr)
+
+        for item in products_arr:
+            with open('email_items.txt', 'w') as fp:
+                fp.write('\n'.join('{} {}'.format(
+                    item[0], item[1]) for x in products_arr))
         return
 
     def process_item(self, item, spider):
@@ -26,6 +31,7 @@ class SwappaPipeline(object):
 
         name = item["item"]
         price = item["price"]
+        color = item["color"]
 
         if len(products_arr) == 0:
             products_arr.append((f"{name}", []))
@@ -38,17 +44,17 @@ class SwappaPipeline(object):
                 break
 
         if name == "Xbox One X":
-            if price < 300:
+            if price > 700:
                 for item_tuple in products_arr:
                     if item_tuple[0] == name:
                         item_tuple[1].append(item)
 
         if name == "OnePlus 7 Pro":
-            if price <= 456:
+            if color == "Blue":
                 for item_tuple in products_arr:
                     if item_tuple[0] == name:
                         item_tuple[1].append(item)
-
+            return item
 
         # if item_name not in products_arr:
         #     print("Wasn't in there")

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    # -*- coding: utf-8 -*-
 import scrapy
 from ..items import SwappaItem
 import re
@@ -6,8 +6,8 @@ import re
 
 class DiscountSpider(scrapy.Spider):
     name = 'swappa'
-    start_urls = ['https://swappa.com/mobile/buy/oneplus-7-pro/unlocked',
-                  'https://swappa.com/gaming/buy/xbox-one-x']
+    start_urls = ['https://swappa.com/mobile/buy/oneplus-7-pro/unlocked']
+                #   'https://swappa.com/gaming/buy/xbox-one-x']
 
     def parse(self, response):
         swappa_domain = "https://swappa.com"
