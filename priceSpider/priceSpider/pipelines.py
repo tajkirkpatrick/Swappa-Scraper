@@ -17,12 +17,17 @@ class SwappaPipeline(object):
         return
 
     def close_spider(self, spider):
-        pprint(products_arr)
+        listing_num = 1
 
-        for item in products_arr:
-            with open('email_items.txt', 'w') as fp:
-                fp.write('\n'.join('{} {}'.format(
-                    item[0], item[1]) for x in products_arr))
+        if len(products_arr) != 0:
+            for item in products_arr:
+                with open(f'{item[0]}.txt', 'w') as fp:
+                    fp.write(str(
+                        f"Alert! Check on your [ {item[0]} ] at Swappa\n\npriceSpider found:\n"))
+                    for listing in item[1]:
+                        fp.write("\t"+str(
+                            listing_num) + f": [{listing['price']}] [{listing['condition_label']}] [{listing['color']}] {listing['item']}, with description: {listing['description']}\n\t\t{listing['link']}\n")
+                        listing_num += 1
         return
 
     def process_item(self, item, spider):
@@ -50,7 +55,7 @@ class SwappaPipeline(object):
                         item_tuple[1].append(item)
 
         if name == "OnePlus 7 Pro":
-            if color == "Blue":
+            if color != "Almond":
                 for item_tuple in products_arr:
                     if item_tuple[0] == name:
                         item_tuple[1].append(item)
