@@ -1,10 +1,17 @@
+import json
+import os
 import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from email.mime.base import MIMEBase
-from email import encoders
-import os.path
 from datetime import datetime
+from email import encoders
+from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+with open(os.path.join(os.getcwd(), 'priceSpider/creds.json'), 'r') as fin:
+    data = json.load(fin)
+    client_email = data['client_email']
+    password = data['password']
+    send_to_email = data['send_to_email']
 
 
 class MailSender(object):
@@ -13,12 +20,12 @@ class MailSender(object):
         pass
 
     def sendEmail(self):
-        client_email = ""
-        password = ""
-        send_to_email = ""
+        global client_email
+        global password
+        global send_to_email
         subject = "Swappa Price Spider Alert!"
         message = f"This is an automated message sent by your Scrapy script run on {str(datetime.now())}!"
-        file_location = "/home/tkirkp18/development/gits/Swappa-Scraper/priceSpider/swappa_web.txt"
+        file_location = os.path.join(os.getcwd(), 'swappa_web.txt')
 
         msg = MIMEMultipart()
         msg["From"] = client_email
