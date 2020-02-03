@@ -5,9 +5,12 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 from pprint import pprint
-import json
+from .mailbox import MailSender
+
+
 products_arr = []
 existing_products = []
+mailman = MailSender()
 
 
 class SwappaPipeline(object):
@@ -17,17 +20,16 @@ class SwappaPipeline(object):
         return
 
     def close_spider(self, spider):
-        listing_num = 1
+        emailTrigger = False
 
-        if len(products_arr) != 0:
-            for item in products_arr:
-                with open(f'{item[0]}.txt', 'w') as fp:
-                    fp.write(str(
-                        f"Alert! Check on your [ {item[0]} ] at Swappa\n\npriceSpider found:\n"))
-                    for listing in item[1]:
-                        fp.write("\t"+str(
-                            listing_num) + f": [{listing['price']}] [{listing['condition_label']}] [{listing['color']}] {listing['item']}, with description: {listing['description']}\n\t\t{listing['link']}\n")
-                        listing_num += 1
+        for product in products_arr:
+            if len(product[1]) != 0:
+                emailTrigger = True
+
+        if emailTrigger:
+            self.webToText(products_arr)
+            mailman.sendEmail()
+
         return
 
     def process_item(self, item, spider):
@@ -49,26 +51,35 @@ class SwappaPipeline(object):
                 break
 
         if name == "Xbox One X":
-            if price > 700:
-                for item_tuple in products_arr:
-                    if item_tuple[0] == name:
-                        item_tuple[1].append(item)
-
-        if name == "OnePlus 7 Pro":
-            if color != "Almond":
+            if price < 300:
                 for item_tuple in products_arr:
                     if item_tuple[0] == name:
                         item_tuple[1].append(item)
             return item
 
-        # if item_name not in products_arr:
-        #     print("Wasn't in there")
-        # else:
-        #     print("SUCCESS - HERE")
+        if name == "OnePlus 7 Pro":
+            if color == "Almond":
+                for item_tuple in products_arr:
+                    if item_tuple[0] == name:
+                        item_tuple[1].append(item)
+            return item
 
-        return item
+        return
 
-        # if item["price"] < 450:
-        #     return item
-        # else:
-        #     return None
+    def webToText(self, arr):
+        listing_num = 1
+
+        with open('swappa_web.txt', 'w') as fp:
+            fp.write(str(
+                f"Alert! Spider caught these in the [ {arr[0][0]}, {arr[1][0]} ] web from Swappa\n\npriceSpider potential victims:\n"))
+
+        with open('swappa_web.txt', 'a') as fp:
+            for item in arr:
+                for listing in item[1]:
+                    fp.write(str(listing_num) +
+                             f": [{listing['item']}] [{listing['price']}] [{listing['condition_label']}] [{listing['color']}] description: {listing['description']}\n\t{listing['link']}\n\n")
+                    listing_num += 1
+
+            fp.write(
+                "Note: IF item is listed in web brackets, but no listing is found. Item was scraped but no listings met criteria.")
+        return
