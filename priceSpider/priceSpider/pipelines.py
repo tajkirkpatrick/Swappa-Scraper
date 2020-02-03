@@ -28,7 +28,7 @@ class SwappaPipeline(object):
 
         if emailTrigger:
             self.webToText(products_arr)
-            mailman.sendEmail()
+            # mailman.sendEmail()
 
         return
 
@@ -51,7 +51,7 @@ class SwappaPipeline(object):
                 break
 
         if name == "Xbox One X":
-            if price < 300:
+            if price <= 300:
                 for item_tuple in products_arr:
                     if item_tuple[0] == name:
                         item_tuple[1].append(item)
@@ -64,14 +64,19 @@ class SwappaPipeline(object):
                         item_tuple[1].append(item)
             return item
 
-        return
+        if name == "PlayStation 4 Pro":
+            if price <= 250:
+                for item_tuple in products_arr:
+                    if item_tuple[0] == name:
+                        item_tuple[1].append(item)
+            return item
 
     def webToText(self, arr):
         listing_num = 1
 
         with open('swappa_web.txt', 'w') as fp:
             fp.write(str(
-                f"Alert! Spider caught these in the [ {arr[0][0]}, {arr[1][0]} ] web from Swappa\n\npriceSpider potential victims:\n"))
+                f"Alert! Spider caught these in the [ {arr[0][0]}, {arr[1][0]}, {arr[2][0]} ] web from Swappa\n\npriceSpider potential victims:\n"))
 
         with open('swappa_web.txt', 'a') as fp:
             for item in arr:

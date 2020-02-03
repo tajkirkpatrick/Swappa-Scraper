@@ -7,7 +7,8 @@ import re
 class DiscountSpider(scrapy.Spider):
     name = 'swappa'
     start_urls = ['https://swappa.com/mobile/buy/oneplus-7-pro/unlocked',
-                  'https://swappa.com/gaming/buy/xbox-one-x']
+                  'https://swappa.com/gaming/buy/xbox-one-x',
+                  'https://swappa.com/gaming/buy/playstation-4-pro']
 
     def parse(self, response):
         swappa_domain = "https://swappa.com"
