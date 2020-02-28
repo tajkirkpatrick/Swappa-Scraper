@@ -1,2 +1,7 @@
 # Do NOT track these directories
 .vscode/
+
+
+# Do NOT track these files
+Pipfile
+Pipfile.lock
