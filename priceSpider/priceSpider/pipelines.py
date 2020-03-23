@@ -5,12 +5,14 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 from pprint import pprint
-from .mailbox import MailSender
+
+# TODO: Fix creds.json to add a new email to send from, then uncomment this import and object below
+# from .mailbox import MailSender
 
 
 products_arr = []
 existing_products = []
-mailman = MailSender()
+# mailman = MailSender()
 
 
 class SwappaPipeline(object):
@@ -29,6 +31,7 @@ class SwappaPipeline(object):
         if emailTrigger:
             self.webToText(products_arr)
             print("email sent!")
+            # TODO: Uncomment this when creds.json is fixed
             # mailman.sendEmail()
 
         return
@@ -51,7 +54,7 @@ class SwappaPipeline(object):
                 break
 
         if name == "Xbox One X":
-            if price <= 300:
+            if price <= 280:
                 for item_tuple in products_arr:
                     if item_tuple[0] == name:
                         item_tuple[1].append(item)
